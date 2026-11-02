@@ -1,0 +1,442 @@
+{% extends "pages/base.html" %}
+{% load static %}
+
+{% block title %}خرید و فروش و اجاره | دفتر مشاور املاک احمدی{% endblock %}
+{% block body_class %}inner-page{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+
+<section class="properties-hero">
+    <div class="container">
+        <div class="properties-hero-card reveal-item">
+
+            <h1>دفتر مشاور املاک احمدی</h1>
+
+            <h3>با مدیریت مهندس احمدی</h3>
+
+            <p class="phone-line">
+                📞 <span dir="ltr">0912 2256003</span>
+            </p>
+
+            <button
+                type="button"
+                class="contact-trigger"
+                onclick="openContactBox()">
+                تماس با ما
+            </button>
+
+        </div>
+    </div>
+</section>
+
+<!-- Search -->
+
+<section class="property-search-box">
+
+    <div class="container">
+
+        <div class="search-card">
+
+            <h2>🔍 جستجوی پیشرفته ملک</h2>
+
+            <form method="get">
+
+                <div class="search-grid">
+
+                    <div class="field">
+                        <label>نوع معامله</label>
+                        <select name="transaction_type">
+                            <option value="">همه</option>
+                            <option value="buy">خرید</option>
+                            <option value="sell">فروش</option>
+                            <option value="rent">اجاره</option>
+                            <option value="rent_sale">رهن و اجاره</option>
+                            <option value="pre_sale">پیش فروش</option>
+                            <option value="partnership">مشارکت در ساخت</option>
+                            <option value="barter">تهاتر</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>شهر</label>
+                        <input type="text"
+                               name="city"
+                               value="{{ request.GET.city }}"
+                               placeholder="مثلاً تهران">
+                    </div>
+
+                    <div class="field">
+                        <label>محله</label>
+                        <input type="text"
+                               name="neighborhood"
+                               value="{{ request.GET.neighborhood }}"
+                               placeholder="مثلاً سعادت‌آباد">
+                    </div>
+
+                    <div class="field">
+                        <label>خیابان</label>
+                        <input type="text"
+                               name="street"
+                               value="{{ request.GET.street }}"
+                               placeholder="مثلاً ولیعصر">
+                    </div>
+
+                    <div class="field">
+                        <label>حداقل متراژ</label>
+                        <input type="number"
+                               name="min_area"
+                               value="{{ request.GET.min_area }}">
+                    </div>
+
+                    <div class="field">
+                        <label>حداکثر متراژ</label>
+                        <input type="number"
+                               name="max_area"
+                               value="{{ request.GET.max_area }}">
+                    </div>
+
+                    <div class="field">
+                        <label>حداقل قیمت</label>
+                        <input type="number"
+                               name="min_price"
+                               value="{{ request.GET.min_price }}">
+                    </div>
+
+                    <div class="field">
+                        <label>حداکثر قیمت</label>
+                        <input type="number"
+                               name="max_price"
+                               value="{{ request.GET.max_price }}">
+                    </div>
+
+                    <div class="field">
+                        <label>جهت ملک</label>
+                        <select name="direction">
+                            <option value="">همه</option>
+                            <option value="north">شمالی</option>
+                            <option value="south">جنوبی</option>
+                            <option value="east">شرقی</option>
+                            <option value="west">غربی</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>تعداد خواب</label>
+                        <select name="bedrooms">
+                            <option value="">همه</option>
+                            <option value="1">۱ خواب</option>
+                            <option value="2">۲ خواب</option>
+                            <option value="3">۳ خواب</option>
+                            <option value="4">۴ خواب</option>
+                            <option value="5">۵ خواب و بیشتر</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="search-options">
+
+                    <label><input type="checkbox" name="parking"> پارکینگ</label>
+
+                    <label><input type="checkbox" name="storage"> انباری</label>
+
+                    <label><input type="checkbox" name="elevator"> آسانسور</label>
+
+                    <label><input type="checkbox" name="yard"> حیاط</label>
+
+                    <label><input type="checkbox" name="balcony"> بالکن</label>
+
+                    <label><input type="checkbox" name="barter"> قابل تهاتر</label>
+
+                </div>
+
+                <button type="submit" class="search-btn">
+                    🔍 جستجوی ملک
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- لیست املاک -->
+
+<section class="properties">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <h2 class="section-title">
+                فایل‌های ویژه
+            </h2>
+
+            {% if request.user.is_staff %}
+            <a href="/admin/properties/property/add/" class="add-property-btn">
+                ➕ ثبت فایل جدید
+            </a>
+            {% endif %}
+
+        </div>
+
+        <div class="property-grid">
+
+            {% for property in properties %}
+
+            <article class="property-card reveal-item">
+
+                <div class="property-image">
+
+                    {% if property.images.first %}
+                        <img src="{{ property.images.first.image.url }}"
+                             alt="{{ property.title }}"
+                             loading="lazy">
+                    {% else %}
+                        <img src="{% static 'images/property-default.jpg' %}"
+                             alt="{{ property.title }}"
+                             loading="lazy">
+                    {% endif %}
+
+                </div>
+
+                <div class="property-body">
+
+                    <p class="property-code">
+                        کد فایل: {{ property.file_code }}
+                    </p>
+
+                    <h3 class="property-title">
+                        {{ property.title }}
+                    </h3>
+
+                    <p class="property-price">
+
+                        {% if property.transaction_type == "rent_sale" %}
+                            رهن {{ property.deposit }} |
+                            اجاره {{ property.rent }}
+                        {% elif property.price %}
+                            {{ property.price }}
+                        {% else %}
+                            توافقی
+                        {% endif %}
+
+                    </p>
+
+                    <div class="property-info">
+
+                        <span>{{ property.city }}</span>
+
+                        <span>{{ property.get_transaction_type_display }}</span>
+
+                    </div>
+
+                    {% if property.can_barter %}
+                        <span class="property-badge">
+                            تهاتر دارد
+                        </span>
+                    {% endif %}
+
+                    <a href="{% url 'property_detail' property.id %}"
+                       class="property-btn">
+                        مشاهده اطلاعات
+                    </a>
+
+                </div>
+
+            </article>
+
+            {% empty %}
+
+                {% for i in "123456"|make_list %}
+
+                <article class="property-card reveal-item">
+
+                    <div class="property-image">
+
+                        <img src="{% static 'images/property-default.jpg' %}"
+                             alt="فایل ویژه {{ i }}"
+                             loading="lazy">
+
+                    </div>
+
+                    <div class="property-body">
+
+                        <p class="property-code">
+                            فایل ویژه {{ i }}
+                        </p>
+
+                        <h3 class="property-title">
+                            هنوز ثبت نشده
+                        </h3>
+
+                        <p class="property-price">
+                            ---
+                        </p>
+
+                        <a href="#"
+                           class="property-btn">
+                            به‌زودی
+                        </a>
+
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            {% endfor %}
+
+        </div>
+
+        {% if properties.has_other_pages %}
+
+        <nav class="pagination" aria-label="صفحه‌بندی فایل‌ها">
+
+            {% if properties.has_previous %}
+                <a href="?page={{ properties.previous_page_number }}">
+                    قبلی
+                </a>
+            {% endif %}
+
+            {% for num in properties.paginator.page_range %}
+
+                {% if properties.number == num %}
+
+                    <a class="active"
+                       href="?page={{ num }}"
+                       aria-current="page">
+                        {{ num }}
+                    </a>
+
+                {% else %}
+
+                    <a href="?page={{ num }}">
+                        {{ num }}
+                    </a>
+
+                {% endif %}
+
+            {% endfor %}
+
+            {% if properties.has_next %}
+                <a href="?page={{ properties.next_page_number }}">
+                    بعدی
+                </a>
+            {% endif %}
+
+        </nav>
+
+        {% endif %}
+
+    </div>
+
+</section>
+<!-- Contact Modal -->
+
+<div id="contactBox"
+     class="contact-box-modal"
+     aria-hidden="true"
+     onclick="if(event.target === this) closeContactBox()">
+
+    <div class="contact-box-modal-content"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="contactTitle"
+         onclick="event.stopPropagation()">
+
+        <button type="button"
+                class="contact-close"
+                onclick="closeContactBox()"
+                aria-label="بستن">
+            ×
+        </button>
+
+        <h3 id="contactTitle">
+            تماس با ما
+        </h3>
+
+        <div class="contact-grid">
+
+            <a href="tel:+989122256003" class="contact-item">
+                <img src="{% static 'images/phone.png' %}" alt="تماس">
+                <span>تماس</span>
+            </a>
+
+            <a href="https://wa.me/989122256003"
+               target="_blank"
+               rel="noopener"
+               class="contact-item">
+                <img src="{% static 'images/whatsapp.png' %}" alt="واتساپ">
+                <span>واتساپ</span>
+            </a>
+
+            <a href="https://t.me/USERNAME"
+               target="_blank"
+               rel="noopener"
+               class="contact-item">
+                <img src="{% static 'images/telegram.png' %}" alt="تلگرام">
+                <span>تلگرام</span>
+            </a>
+
+            <a href="https://rubika.ir/Mohamadbagher428"
+               target="_blank"
+               rel="noopener"
+               class="contact-item">
+                <img src="{% static 'images/rubika.png' %}" alt="روبیکا">
+                <span>روبیکا</span>
+            </a>
+
+            <a href="https://instagram.com/USERNAME"
+               target="_blank"
+               rel="noopener"
+               class="contact-item">
+                <img src="{% static 'images/instagram.png' %}" alt="اینستاگرام">
+                <span>اینستا</span>
+            </a>
+
+            <a href="https://divar.ir/"
+               target="_blank"
+               rel="noopener"
+               class="contact-item">
+                <img src="{% static 'images/divar.png' %}" alt="دیوار">
+                <span>دیوار</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function openContactBox() {
+    const box = document.getElementById("contactBox");
+    if (!box) return;
+
+    box.classList.add("show");
+    box.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+}
+
+function closeContactBox() {
+    const box = document.getElementById("contactBox");
+    if (!box) return;
+
+    box.classList.remove("show");
+    box.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+}
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeContactBox();
+    }
+});
+</script>
+
+{% endblock %}
+

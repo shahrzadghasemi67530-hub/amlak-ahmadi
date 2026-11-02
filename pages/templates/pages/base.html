@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}دفتر مشاور املاک احمدی{% endblock %}</title>
+
+    <meta name="description"
+        content="دفتر مشاور املاک احمدی | خرید، فروش، رهن، اجاره، پیش فروش، مشارکت در ساخت و تهاتر انواع املاک">
+
+    <meta name="keywords"
+        content="املاک، مشاور املاک، خرید خانه، فروش خانه، اجاره، رهن، مشارکت در ساخت، تهاتر">
+
+    <meta name="author" content="دفتر مشاور املاک احمدی">
+
+    <meta name="robots" content="index,follow">
+
+    <meta name="theme-color" content="#0f172a">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="دفتر مشاور املاک احمدی">
+    <meta property="og:description" content="خرید، فروش، رهن و اجاره انواع املاک">
+    <meta property="og:image" content="{% static 'images/logo.png' %}">
+    <meta property="og:locale" content="fa_IR">
+
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+<header>
+    <div class="container">
+        <nav>
+            <a href="{% url 'landing' %}">ورود</a>
+            <a href="{% url 'home' %}">خانه</a>
+            <a href="{% url 'property_list' %}">خرید و فروش و اجاره</a>
+            <a href="{% url 'customer_filters' %}">جستجوی ملک</a>
+
+            {% if request.user.is_staff %}
+                <a href="/admin/">پنل مدیریت</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<div id="contactBox" class="contact-box-modal" aria-hidden="true"
+     onclick="if(event.target === this) closeContactBox()">
+
+    <div class="contact-box-modal-content"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="contactTitle"
+         onclick="event.stopPropagation()">
+
+        <button type="button"
+                class="contact-close"
+                onclick="closeContactBox()"
+                aria-label="بستن">
+            ×
+        </button>
+
+        <h3 id="contactTitle">تماس با ما</h3>
+
+        <div class="contact-grid">
+
+            <a href="tel:+989122256003" class="contact-item">
+                <img src="{% static 'images/phone.png' %}" alt="تماس">
+                <span>تماس</span>
+            </a>
+
+            <a href="https://wa.me/989122256003"
+               target="_blank"
+               rel="noopener"
+               class="contact-item">
+                <img src="{% static 'images/whatsapp.png' %}" alt="واتساپ">
+                <span>واتساپ</span>
+            </a>
+
+            <a href="https://t.me/USERNAME"
+               target="_blank"
+               rel="noopener"
+               class="contact-item">
+                <img src="{% static 'images/telegram.png' %}" alt="تلگرام">
+                <span>تلگرام</span>
+            </a>
+
+            <a href="https://rubika.ir/Mohamadbagher428"
+               target="_blank"
+               rel="noopener"
+               class="contact-item">
+                <img src="{% static 'images/rubika.png' %}" alt="روبیکا">
+                <span>روبیکا</span>
+            </a>
+
+            <a href="https://instagram.com/USERNAME"
+               target="_blank"
+               rel="noopener"
+               class="contact-item">
+                <img src="{% static 'images/instagram.png' %}" alt="اینستاگرام">
+                <span>اینستاگرام</span>
+            </a>
+
+            <a href="https://divar.ir/"
+               target="_blank"
+               rel="noopener"
+               class="contact-item">
+                <img src="{% static 'images/divar.png' %}" alt="دیوار">
+                <span>دیوار</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function openContactBox() {
+    const box = document.getElementById("contactBox");
+    if (!box) return;
+
+    box.classList.add("show");
+    box.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+}
+
+function closeContactBox() {
+    const box = document.getElementById("contactBox");
+    if (!box) return;
+
+    box.classList.remove("show");
+    box.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+}
+
+document.addEventListener("keydown", function(event){
+    if(event.key==="Escape"){
+        closeContactBox();
+    }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const items = document.querySelectorAll(".reveal-item");
+
+    if (!items.length) return;
+
+    if (!("IntersectionObserver" in window)) {
+
+        items.forEach(function(el){
+            el.classList.add("is-visible");
+        });
+
+        return;
+    }
+
+    const observer = new IntersectionObserver(function(entries, obs){
+
+        entries.forEach(function(entry){
+
+            if(entry.isIntersecting){
+
+                entry.target.classList.add("is-visible");
+
+                obs.unobserve(entry.target);
+
+            }
+
+        });
+
+    },{
+        threshold:0.15
+    });
+
+    items.forEach(function(el){
+        observer.observe(el);
+    });
+
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+</body>
+</html>

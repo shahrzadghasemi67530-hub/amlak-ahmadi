@@ -1,0 +1,327 @@
+{% extends "pages/base.html" %}
+{% load static %}
+
+{% block title %}خانه | دفتر مشاور املاک احمدی{% endblock %}
+{% block body_class %}home-page{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-card reveal-item">
+            <h1>دفتر مشاور املاک احمدی</h1>
+            <h3>خرید، فروش، اجاره، پیش‌فروش و مشارکت در ساخت</h3>
+
+            <p>
+                مشاوره تخصصی در زمینهٔ خرید و فروش ملک، اجاره، رهن و اجاره،
+                پیش‌فروش و تهاتر با همراهی تیم املاک احمدی.
+            </p>
+
+            <p class="phone-line">
+                📞 <span dir="ltr" class="phone-ltr">0912 225 6003</span>
+            </p>
+
+            <div class="hero-buttons">
+                <a href="{% url 'property_list' %}" class="btn btn-gold">ورود به صفحه خرید و فروش و اجاره</a>
+                <button type="button" class="btn btn-dark" onclick="openContactBox()">تماس با ما</button>
+            </div>
+
+            <div class="hero-info">
+                <div>
+                    <strong>مشاوره سریع</strong>
+                    <span>تماس مستقیم با واحدهای تخصصی</span>
+                </div>
+                <div>
+                    <strong>ملک‌های ویژه</strong>
+                    <span>مشاهده فایل‌های منتخب</span>
+                </div>
+                <div>
+                    <strong>پشتیبانی</strong>
+                    <span>همراهی تا انجام معامله</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services home-services">
+    <div class="container">
+        <h2 class="section-title reveal-item">خدمات ما</h2>
+
+        <div class="services-grid">
+            <article class="service-card reveal-item">
+                <div class="service-icon">🏠</div>
+                <h3>خرید و فروش</h3>
+                <p>مشاوره تخصصی برای خرید، فروش و معاوضه انواع ملک.</p>
+                <button type="button" class="quick-contact-btn" onclick="toggleQuickContactModal()">
+                    ارتباط سریع
+                </button>
+            </article>
+
+            <article class="service-card reveal-item">
+                <div class="service-icon">🔑</div>
+                <h3>اجاره</h3>
+                <p>رهن، اجاره و تبدیل با بررسی دقیق نیاز مشتری و ملک مناسب.</p>
+                <button type="button" class="quick-contact-btn" onclick="toggleSpecialistModal()">
+                    مشاوره تخصصی
+                </button>
+            </article>
+
+            <article class="service-card reveal-item">
+                <div class="service-icon">🏗️</div>
+                <h3>مشارکت در ساخت</h3>
+                <p>همراهی در پروژه‌های ساخت و سرمایه‌گذاری ملکی.</p>
+                <button type="button" class="quick-contact-btn" onclick="toggleSpecialistModal()">
+                    مشاوره تخصصی
+                </button>
+            </article>
+        </div>
+
+        <div class="home-cta reveal-item">
+            <a href="{% url 'property_list' %}" class="btn btn-gold">ورود به صفحه خرید و فروش و اجاره</a>
+        </div>
+    </div>
+</section>
+
+<div id="quickContactModal" class="quick-contact-modal" aria-hidden="true">
+    <div class="quick-contact-panel" role="dialog" aria-modal="true" aria-labelledby="quickContactTitle" onclick="event.stopPropagation()">
+        <h2 id="quickContactTitle">ارتباط سریع</h2>
+        <p>بخش موردنظر را انتخاب کنید.</p>
+
+        <div class="quick-contact-tabs">
+            {% for item in quick_contacts %}
+                <button
+                    type="button"
+                    class="quick-contact-tab {% if forloop.first %}active{% endif %}"
+                    data-target="quick-contact-{{ item.slug }}">
+                    {{ item.title }}
+                </button>
+            {% endfor %}
+        </div>
+
+        <div class="quick-contact-sections">
+            {% for item in quick_contacts %}
+                <div
+                    id="quick-contact-{{ item.slug }}"
+                    class="quick-contact-section {% if forloop.first %}active{% endif %}">
+                    <div class="quick-contact-person">
+                        <strong>{{ item.title }}</strong>
+                        <span>{{ item.note }}</span>
+                    </div>
+
+                    <div class="quick-contact-grid">
+                        <a href="tel:{{ item.phone_tel }}" class="quick-contact-item">
+                            <img src="{% static 'images/phone.png' %}" alt="تماس">
+                            <span>تماس</span>
+                            <small dir="ltr">{{ item.phone_plain }}</small>
+                        </a>
+
+                        <a href="{{ item.whatsapp }}" target="_blank" rel="noopener noreferrer" class="quick-contact-item">
+                            <img src="{% static 'images/whatsapp.png' %}" alt="واتساپ">
+                            <span>واتساپ</span>
+                            <small>پیام</small>
+                        </a>
+
+                        <a href="{{ item.telegram }}" target="_blank" rel="noopener noreferrer" class="quick-contact-item">
+                            <img src="{% static 'images/telegram.png' %}" alt="تلگرام">
+                            <span>تلگرام</span>
+                            <small>پیام</small>
+                        </a>
+
+                        <a href="{{ item.rubika }}" target="_blank" rel="noopener noreferrer" class="quick-contact-item">
+                            <img src="{% static 'images/rubika.png' %}" alt="روبیکا">
+                            <span>روبیکا</span>
+                            <small>پیام</small>
+                        </a>
+
+                        <a href="{{ item.divar }}" target="_blank" rel="noopener noreferrer" class="quick-contact-item">
+                            <img src="{% static 'images/divar.png' %}" alt="دیوار">
+                            <span>دیوار</span>
+                            <small>آگهی‌ها</small>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div id="specialistContactModal" class="quick-contact-modal" aria-hidden="true">
+    <div class="quick-contact-panel" role="dialog" aria-modal="true" aria-labelledby="specialistContactTitle" onclick="event.stopPropagation()">
+        <h2 id="specialistContactTitle">مشاوره تخصصی</h2>
+        <p>بخش موردنظر را انتخاب کنید.</p>
+
+        <div class="quick-contact-tabs">
+            {% for item in specialist_contacts %}
+                <button
+                    type="button"
+                    class="quick-contact-tab {% if forloop.first %}active{% endif %}"
+                    data-target="specialist-contact-{{ item.slug }}">
+                    {{ item.title }}
+                </button>
+            {% endfor %}
+        </div>
+
+        <div class="quick-contact-sections">
+            {% for item in specialist_contacts %}
+                <div
+                    id="specialist-contact-{{ item.slug }}"
+                    class="quick-contact-section {% if forloop.first %}active{% endif %}">
+                    <div class="quick-contact-person">
+                        <strong>{{ item.title }}</strong>
+                        <span>{{ item.note }}</span>
+                    </div>
+
+                    <div class="quick-contact-grid">
+                        <a href="tel:{{ item.phone_tel }}" class="quick-contact-item">
+                            <img src="{% static 'images/phone.png' %}" alt="تماس">
+                            <span>تماس</span>
+                            <small dir="ltr">{{ item.phone_plain }}</small>
+                        </a>
+
+                        <a href="{{ item.whatsapp }}" target="_blank" rel="noopener noreferrer" class="quick-contact-item">
+                            <img src="{% static 'images/whatsapp.png' %}" alt="واتساپ">
+                            <span>واتساپ</span>
+                            <small>پیام</small>
+                        </a>
+
+                        <a href="{{ item.telegram }}" target="_blank" rel="noopener noreferrer" class="quick-contact-item">
+                            <img src="{% static 'images/telegram.png' %}" alt="تلگرام">
+                            <span>تلگرام</span>
+                            <small>پیام</small>
+                        </a>
+
+                        <a href="{{ item.rubika }}" target="_blank" rel="noopener noreferrer" class="quick-contact-item">
+                            <img src="{% static 'images/rubika.png' %}" alt="روبیکا">
+                            <span>روبیکا</span>
+                            <small>پیام</small>
+                        </a>
+
+                        <a href="{{ item.divar }}" target="_blank" rel="noopener noreferrer" class="quick-contact-item">
+                            <img src="{% static 'images/divar.png' %}" alt="دیوار">
+                            <span>دیوار</span>
+                            <small>آگهی‌ها</small>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleQuickContactModal() {
+    const modal = document.getElementById("quickContactModal");
+    if (!modal) return;
+
+    if (modal.classList.contains("show")) {
+        closeQuickContactModal();
+    } else {
+        openQuickContactModal();
+    }
+}
+
+function openQuickContactModal() {
+    const modal = document.getElementById("quickContactModal");
+    if (!modal) return;
+
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+}
+
+function closeQuickContactModal() {
+    const modal = document.getElementById("quickContactModal");
+    if (!modal) return;
+
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+}
+
+function toggleSpecialistModal() {
+    const modal = document.getElementById("specialistContactModal");
+    if (!modal) return;
+
+    if (modal.classList.contains("show")) {
+        closeSpecialistModal();
+    } else {
+        openSpecialistModal();
+    }
+}
+
+function openSpecialistModal() {
+    const modal = document.getElementById("specialistContactModal");
+    if (!modal) return;
+
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+}
+
+function closeSpecialistModal() {
+    const modal = document.getElementById("specialistContactModal");
+    if (!modal) return;
+
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+}
+
+document.addEventListener("click", function (event) {
+    const quickModal = document.getElementById("quickContactModal");
+    if (quickModal && quickModal.classList.contains("show") && event.target === quickModal) {
+        closeQuickContactModal();
+    }
+
+    const specialistModal = document.getElementById("specialistContactModal");
+    if (specialistModal && specialistModal.classList.contains("show") && event.target === specialistModal) {
+        closeSpecialistModal();
+    }
+});
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        closeQuickContactModal();
+        closeSpecialistModal();
+    }
+});
+
+document.querySelectorAll("#quickContactModal .quick-contact-tab").forEach((tab) => {
+    tab.addEventListener("click", function () {
+        const targetId = this.dataset.target;
+
+        document.querySelectorAll("#quickContactModal .quick-contact-tab").forEach((btn) => {
+            btn.classList.remove("active");
+        });
+        this.classList.add("active");
+
+        document.querySelectorAll("#quickContactModal .quick-contact-section").forEach((section) => {
+            section.classList.remove("active");
+            if (section.id === targetId) {
+                section.classList.add("active");
+            }
+        });
+    });
+});
+
+document.querySelectorAll("#specialistContactModal .quick-contact-tab").forEach((tab) => {
+    tab.addEventListener("click", function () {
+        const targetId = this.dataset.target;
+
+        document.querySelectorAll("#specialistContactModal .quick-contact-tab").forEach((btn) => {
+            btn.classList.remove("active");
+        });
+        this.classList.add("active");
+
+        document.querySelectorAll("#specialistContactModal .quick-contact-section").forEach((section) => {
+            section.classList.remove("active");
+            if (section.id === targetId) {
+                section.classList.add("active");
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

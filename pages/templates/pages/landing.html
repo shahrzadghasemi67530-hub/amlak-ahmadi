@@ -1,0 +1,18 @@
+{% extends "pages/base.html" %}
+{% load static %}
+
+{% block title %}ورود به سایت | دفتر مشاور املاک احمدی{% endblock %}
+{% block body_class %}landing-page{% endblock %}
+
+{% block content %}
+<section class="landing-screen">
+    <div class="landing-overlay"></div>
+
+    <div class="container landing-wrap">
+        <div class="landing-content">
+            <p>همراه مطمئن شما در خرید، فروش و اجاره ملک</p>
+            <a href="{% url 'home' %}" class="landing-btn">ورود به سایت</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
