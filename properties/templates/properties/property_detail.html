@@ -1,0 +1,150 @@
+{% extends "pages/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}{{ property.title }}{% endblock %}
+{% block body_class %}inner-page{% endblock %}
+
+{% block content %}
+
+<section class="property-detail">
+
+    <div class="container">
+
+        <div class="property-detail-card">
+
+            <div class="property-gallery">
+
+                {% if property.images.all %}
+                    {% for image in property.images.all %}
+                        <img src="{{ image.image.url }}"
+                             alt="{{ property.title }}"
+                             class="detail-image">
+                    {% endfor %}
+                {% else %}
+                    <img src="{% static 'images/property-default.jpg' %}"
+                         alt="{{ property.title }}"
+                         class="detail-image">
+                {% endif %}
+
+            </div>
+
+            <div class="property-detail-info">
+
+                <h1>{{ property.title }}</h1>
+
+                <h2>
+                    {% if property.price %}
+                        {{ property.price|intcomma }} تومان
+                    {% else %}
+                        توافقی
+                    {% endif %}
+                </h2>
+
+                <p><strong>کد فایل:</strong> {{ property.file_code }}</p>
+
+                <p><strong>نوع معامله:</strong> {{ property.get_transaction_type_display }}</p>
+
+                <p><strong>شهر:</strong> {{ property.city }}</p>
+
+                <p><strong>محله:</strong> {{ property.neighborhood|default:"ثبت نشده" }}</p>
+
+                <p><strong>خیابان:</strong> {{ property.street|default:"ثبت نشده" }}</p>
+
+                <p><strong>متراژ:</strong> {{ property.area }} متر</p>
+
+                <p><strong>تعداد خواب:</strong> {{ property.bedrooms|default:"-" }}</p>
+
+                <p><strong>جهت ملک:</strong> {{ property.get_direction_display|default:"-" }}</p>
+
+                <p><strong>طبقه:</strong> {{ property.floor|default:"-" }}</p>
+
+                <p><strong>تعداد طبقات:</strong> {{ property.total_floors|default:"-" }}</p>
+
+                <p><strong>واحد در طبقه:</strong> {{ property.units_per_floor|default:"-" }}</p>
+
+                <p><strong>نوع واحد:</strong> {{ property.get_unit_type_display|default:"-" }}</p>
+
+                <p><strong>سال ساخت:</strong> {{ property.year_built|default:"-" }}</p>
+
+                <p><strong>نوع سند:</strong> {{ property.get_deed_type_display|default:"-" }}</p>
+
+                {% if property.deposit %}
+                    <p><strong>رهن:</strong> {{ property.deposit|intcomma }} تومان</p>
+                {% endif %}
+
+                {% if property.rent %}
+                    <p><strong>اجاره:</strong> {{ property.rent|intcomma }} تومان</p>
+                {% endif %}
+
+                <h3>امکانات</h3>
+
+                <ul class="property-features">
+
+                    {% if property.parking %}
+                        <li>🚗 پارکینگ</li>
+                    {% endif %}
+
+                    {% if property.storage %}
+                        <li>📦 انباری</li>
+                    {% endif %}
+
+                    {% if property.elevator %}
+                        <li>🛗 آسانسور</li>
+                    {% endif %}
+
+                    {% if property.yard %}
+                        <li>🌳 حیاط</li>
+                    {% endif %}
+
+                    {% if property.balcony %}
+                        <li>🏡 بالکن</li>
+                    {% endif %}
+
+                </ul>
+
+                {% if property.can_barter %}
+                    <h3>تهاتر</h3>
+
+                    <p>✅ این ملک قابل تهاتر است.</p>
+
+                    {% if property.barter_preference %}
+                        <p><strong>ترجیح تهاتر:</strong> {{ property.barter_preference }}</p>
+                    {% endif %}
+
+                    {% if property.barter_note %}
+                        <p>{{ property.barter_note }}</p>
+                    {% endif %}
+                {% endif %}
+
+                <h3>توضیحات</h3>
+
+                <p>{{ property.description|default:"توضیحی ثبت نشده است." }}</p>
+
+                <div class="detail-buttons">
+
+                    <a href="tel:+989122256003" class="property-btn">
+                        📞 تماس
+                    </a>
+
+                    <a href="https://wa.me/989122256003"
+                       target="_blank"
+                       class="property-btn">
+                        💬 واتساپ
+                    </a>
+
+                    <a href="{% url 'property_list' %}" class="property-btn">
+                        ← بازگشت به فایل‌ها
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
